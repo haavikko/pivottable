@@ -16,7 +16,8 @@
       "TSV Export": function(pivotData, opts) {
         var agg, colAttrs, colKey, colKeys, defaults, i, j, k, l, len, len1, len2, len3, len4, len5, m, n, r, result, row, rowAttr, rowAttrs, rowKey, rowKeys, text;
         defaults = {
-          localeStrings: {}
+          localeStrings: {},
+          formatTsv: false
         };
         opts = $.extend(true, {}, defaults, opts);
         rowKeys = pivotData.getRowKeys();
@@ -55,7 +56,11 @@
             colKey = colKeys[m];
             agg = pivotData.getAggregator(rowKey, colKey);
             if (agg.value() != null) {
-              row.push(agg.value());
+              if (opts.formatTsv) {
+                row.push(agg.format(agg.value()));
+              } else {
+                row.push(agg.value());
+              }
             } else {
               row.push("");
             }
